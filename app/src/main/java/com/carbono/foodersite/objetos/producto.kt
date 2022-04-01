@@ -3,14 +3,15 @@ package com.carbono.foodersite.objetos
 class producto {
 
 
-    var id:String?=null
+    var id:Int?=null
     var nombre:String?=null
     var descripcion:String?=null
     var foto:String?=null
     var precio:Int?=null
     var cantidad:Int?=null
+
     constructor()
-    constructor(id_:String,nombre_:String,descripcion_:String,foto_:String,precio_:Int,cantidad_:Int){
+    constructor(id_:Int,nombre_:String,descripcion_:String,foto_:String,precio_:Int,cantidad_:Int){
 
         this.id=id_
         this.nombre=nombre_

@@ -24,24 +24,38 @@
             android:text="USUARIOS" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:weightSum="5"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/TbAddUsuario"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:background="@drawable/mascara_edit"
                 android:textSize="24dp"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
+                android:hint="usuario"
                 android:text="" />
+            <EditText
+                android:id="@+id/TbAddPass"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/mascara_edit"
+                android:textSize="24dp"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:hint="contraseña"
+                android:text=""
+                />
 
             <Button
                 android:id="@+id/btnAddUsuario"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="24dp"

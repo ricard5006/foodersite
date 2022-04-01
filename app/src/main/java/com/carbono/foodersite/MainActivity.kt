@@ -3,8 +3,12 @@ package com.carbono.foodersite
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import com.carbono.foodersite.DbHelper.DbHelper
+import com.carbono.foodersite.objetos.usuario
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,12 +24,12 @@ class MainActivity : AppCompatActivity() {
             if(textoVacio(tbUsuario) && textoVacio(tbPassword)){
 
                 if(tbUsuario.text.toString() == "admin" && tbPassword.text.toString() == "admin"){
-                    val i = Intent(this,configuracion_activity::class.java)
+                    val i = Intent(this,mesas_activity::class.java)
                     startActivity(i)
-                }else{
-
-
-
+                }
+                if(validarUsuario(tbUsuario.text.toString(),tbPassword.text.toString())){
+                    val i = Intent(this,mesas_activity::class.java)
+                    startActivity(i)
                 }
 
             }
@@ -33,6 +37,21 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun validarUsuario(usr: String, pswd: String): Boolean {
+        var respuesta=false
+        val objDb = DbHelper(this)
+        val objUsuario = usuario()
+        objUsuario.nombre = usr
+        objUsuario.contrasena = pswd
+
+        if(objDb.selectUsuarioBy(objUsuario) == pswd){
+            respuesta = true
+        }
+
+
+        return respuesta
     }
 
 
