@@ -6,10 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.carbono.foodersite.objetos.mesa
-import com.carbono.foodersite.objetos.parametro
-import com.carbono.foodersite.objetos.producto
-import com.carbono.foodersite.objetos.usuario
+import com.carbono.foodersite.objetos.*
 
 class DbHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATABASE_VER)
 {
@@ -27,7 +24,7 @@ class DbHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATA
             ("CREATE TABLE usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, usuario TEXT, password TEXT)")
 
         val CREATE_TABLE_PRODUCTO:String =
-            ("CREATE TABLE productos (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, descripcion TEXT, foto TEXT, precio INTEGER, cantidad INTEGER)")
+            ("CREATE TABLE productos (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, descripcion TEXT, foto TEXT, precio INTEGER, cantidad INTEGER, habilitado TEXT DEFAULT 'TRUE')")
 
         val CREATE_TABLE_MESA:String =
             ("CREATE TABLE mesas (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, ubicacion TEXT, estado TEXT, idProducto INTEGER)")
@@ -36,7 +33,7 @@ class DbHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATA
             ("INSERT INTO mesas (nombre,ubicacion,estado,idProducto)VALUES('Mesa #1','','disponible','')")
 
         val CREATE_TABLE_PEDIDO:String =
-            ("CREATE TABLE pedidos (id INTEGER PRIMARY KEY AUTOINCREMENT, idMesa INTEGER, idProducto INTEGER)")
+            ("CREATE TABLE pedidos (id INTEGER PRIMARY KEY AUTOINCREMENT, idMesa INTEGER, idProducto INTEGER, estado TEXT)")
 
         db!!.execSQL(CREATE_TABLE_PARAMETRO)
         db!!.execSQL(CREATE_TABLE_USUARIO)
@@ -52,8 +49,8 @@ class DbHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATA
         onCreate(db!!)
         db!!.execSQL("DROP TABLE IF EXISTS usuarios")
         onCreate(db!!)
-        db!!.execSQL("DROP TABLE IF EXISTS productos")
-        onCreate(db!!)
+        //db!!.execSQL("DROP TABLE IF EXISTS productos")
+        //onCreate(db!!)
         db!!.execSQL("DROP TABLE IF EXISTS mesas")
         onCreate(db!!)
         db!!.execSQL("DROP TABLE IF EXISTS pedidos")
@@ -213,7 +210,7 @@ class DbHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATA
     @SuppressLint("Range")
     fun selectAllProductos(): List<producto> {
         val listProductos = ArrayList<producto>()
-        val selectQuery="SELECT * FROM productos"
+        val selectQuery="SELECT * FROM productos where habilitado='TRUE'"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery,null)
 
@@ -225,6 +222,7 @@ class DbHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATA
                 prod.descripcion = cursor.getString(cursor.getColumnIndex("descripcion"))
                 prod.foto = cursor.getString(cursor.getColumnIndex("foto"))
                 prod.precio = cursor.getInt(cursor.getColumnIndex("precio"))
+                prod.habilitado = cursor.getString(cursor.getColumnIndex("habilitado"))
 
                 listProductos.add(prod)
 
@@ -234,6 +232,84 @@ class DbHelper(context:Context):SQLiteOpenHelper(context,DATABASE_NAME,null,DATA
         db.close()
 
         return listProductos
+    }
+
+    fun insertProducto(objP: producto):Long {
+
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put("nombre", objP.nombre)
+        values.put("descripcion", objP.descripcion)
+        values.put("foto", objP.foto)
+        values.put("precio", objP.precio)
+        values.put("habilitado", objP.habilitado)
+
+
+        return db.replace("productos", null, values)
+
+    }
+
+    fun updateProducto(prod: producto) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+
+        values.put("habilitado",prod.habilitado)
+
+
+        db.update("productos",values,"id=?" ,arrayOf(prod.id.toString()))
+
+    }
+
+    fun insertPedido(objPedido: pedido):Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put("idMesa",objPedido.Mesa?.id.toString())
+        values.put("idProducto",objPedido.Producto?.id.toString())
+        values.put("estado",objPedido.estado.toString())
+
+        return db.replace("pedidos", null, values)
+    }
+
+    @SuppressLint("Range")
+    fun selectProductoByPedido(idMesa:Int?): List<pedido> {
+        val listPedido = ArrayList<pedido>()
+
+        val selectQuery="select * from pedidos " +
+                "inner join productos on productos.id=pedidos.idProducto " +
+                "where pedidos.idMesa = ?" +
+                "and pedidos.estado = 'TRUE' "
+
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQuery,arrayOf(idMesa.toString()))
+
+        if(cursor.moveToFirst()) {
+            do {
+                val pedido = pedido()
+                val producto = producto()
+
+                pedido.id = cursor.getString(cursor.getColumnIndex("id"))
+
+                producto.nombre = cursor.getString(cursor.getColumnIndex("nombre"))
+                producto.precio = cursor.getInt(cursor.getColumnIndex("precio"))
+
+                pedido.Producto = producto
+
+                listPedido.add(pedido)
+                }while (cursor.moveToNext())
+
+            }
+
+        return listPedido
+    }
+
+    fun updateMesa(objMesa: mesa) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+
+        values.put("estado",objMesa.estado)
+
+
+        db.update("mesas",values,"id=?" ,arrayOf(objMesa.id.toString()))
     }
 
 }

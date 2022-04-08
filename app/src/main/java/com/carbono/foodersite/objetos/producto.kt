@@ -9,9 +9,10 @@ class producto {
     var foto:String?=null
     var precio:Int?=null
     var cantidad:Int?=null
+    var habilitado:String?=null
 
     constructor()
-    constructor(id_:Int,nombre_:String,descripcion_:String,foto_:String,precio_:Int,cantidad_:Int){
+    constructor(id_:Int,nombre_:String,descripcion_:String,foto_:String,precio_:Int,cantidad_:Int,habilitado_:String){
 
         this.id=id_
         this.nombre=nombre_
@@ -19,6 +20,7 @@ class producto {
         this.foto=foto_
         this.precio=precio_
         this.cantidad=cantidad_
+        this.habilitado = habilitado_
 
 
     }

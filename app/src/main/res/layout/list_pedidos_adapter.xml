@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="5dp">
+
+
+    <TextView
+        android:id="@+id/textNombreAdapter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Producto" />
+
+    <TextView
+        android:id="@+id/textPrecioAdapter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        android:textColor="@color/rojo"
+        android:textStyle="bold"
+        android:text="textPrecio" />
+</LinearLayout>

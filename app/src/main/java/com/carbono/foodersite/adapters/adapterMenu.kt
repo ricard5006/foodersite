@@ -1,6 +1,7 @@
 package com.carbono.foodersite.adapters
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.carbono.foodersite.R
 import com.carbono.foodersite.objetos.producto
+import java.io.File
 
 class adapterMenu (private val mContext:Context,private val lista:List<producto>):
     ArrayAdapter<producto>(mContext,0,lista){
@@ -27,6 +29,15 @@ class adapterMenu (private val mContext:Context,private val lista:List<producto>
         textNombre.setText(producto.nombre)
         textDescripcion.setText(producto.descripcion)
         textPrecio.setText(producto.precio.toString())
+
+
+        var imgFile = File(producto.foto)
+        if(imgFile.exists()){
+            var mbitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+            if(mbitmap != null) {
+                imageProducto.setImageBitmap(mbitmap)
+            }
+        }
 
 
         return layout

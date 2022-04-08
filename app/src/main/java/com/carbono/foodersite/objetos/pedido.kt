@@ -4,15 +4,17 @@ class pedido {
 
 
     var id:String?=null
-    var mesa:mesa?=null
-    var producto:producto?=null
+    var Mesa:mesa?=null
+    var Producto:producto?=null
+    var estado:String?=null
 
     constructor()
 
-    constructor(id_:String,mesa_:mesa,producto_: producto){
+    constructor(id_:String,Mesa_:mesa,Producto_: producto,estado_:String){
         this.id=id_
-        this.mesa=mesa_
-        this.producto=producto_
+        this.Mesa=Mesa_
+        this.Producto=Producto_
+        this.estado = estado_
 
     }
 

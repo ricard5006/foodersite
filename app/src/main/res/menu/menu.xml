@@ -11,6 +11,11 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:title="Productos"
+        android:id="@+id/ItProductos"
+        app:showAsAction="never"/>
+
+    <item
         android:title="Configuracion"
         android:id="@+id/ItConfig"
         app:showAsAction="never"/>

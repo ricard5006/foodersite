@@ -2,22 +2,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.carbono.foodersite">
 
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Foodersite">
+        android:theme="@style/Theme.Foodersite"
+        android:requestLegacyExternalStorage="true">
+        <activity
+            android:name=".utilidades.dialogArchivos"
+            android:exported="true" >
+
+
+        </activity>
+        <activity
+            android:name=".nuevo_producto_activity"
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".menu_activity"
-            android:exported="false" />
+            android:exported="true" >
+
+
+        </activity>
         <activity
             android:name=".configuracion_activity"
             android:exported="false" />
         <activity
             android:name=".mesas_activity"
-            android:exported="true" >
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,9 +48,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

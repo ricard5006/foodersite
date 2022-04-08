@@ -25,6 +25,11 @@ class mesas_activity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        listarMesas()
+    }
+
     private fun listarMesas() {
         val objDb = DbHelper(this)
         var listMesas:List<mesa> = ArrayList()
@@ -36,13 +41,19 @@ class mesas_activity : AppCompatActivity() {
         val adapter = adapterMesas(this,listMesas)
         grilla.adapter = adapter
 
-        grilla.onItemLongClickListener = AdapterView.OnItemLongClickListener{
+
+
+        grilla.setOnItemClickListener {
                 parent,view,position,id ->
 
             var mesa = listMesas.elementAt(position).id
-//idea: abrir un activity o fragment con la mesa y su pedido
 
-            true
+
+            val i = Intent(this,menu_activity::class.java)
+            i.putExtra("idmesa",mesa)
+            startActivity(i)
+
+            //true
         }
 
 
@@ -81,6 +92,13 @@ class mesas_activity : AppCompatActivity() {
 
         if(id==R.id.ItAdd){
             mesaNueva()
+            return true
+        }
+
+
+        if(id==R.id.ItProductos){
+            val i = Intent(this,nuevo_producto_activity::class.java)
+            startActivity(i)
             return true
         }
 
